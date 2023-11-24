@@ -1,9 +1,10 @@
-use std::fmt::{Display, Formatter};
+use std::fmt::{write, Display, Formatter};
 
 #[derive(Debug)]
 pub enum FileGenError {
     IncompatibleAsciiLoremError,
-    InvalidSizeError,
+    InvalidAmountForSize,
+    InvalidTypeForSize,
 }
 
 impl Display for FileGenError {
@@ -12,8 +13,14 @@ impl Display for FileGenError {
             FileGenError::IncompatibleAsciiLoremError => {
                 write!(f, "You cannot pass --ascii and --lorem at the same time")
             }
-            FileGenError::InvalidSizeError => {
-                write!(f, "The size you inputted was wrongly formatted! Valid options are 'b', 'kb', 'mb' and 'gb'")
+            FileGenError::InvalidAmountForSize => {
+                write!(f, "Invalid amount passed for the size")
+            }
+            FileGenError::InvalidTypeForSize => {
+                write!(
+                    f,
+                    "Invalid type passed for size! Valid options are 'b', 'kb', 'mb' and 'gb'"
+                )
             }
         }
     }

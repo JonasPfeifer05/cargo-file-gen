@@ -1,8 +1,10 @@
 use cargo_file_gen::error::FileGenError;
-use clap::Parser;
+use cargo_file_gen::file_size::FileSize;
+use clap::{arg, Parser};
 use clap_verbosity_flag::Verbosity;
 use color_eyre::eyre::bail;
 use log::{debug, error, info, trace};
+use std::fs;
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
@@ -30,6 +32,12 @@ fn main() -> color_eyre::Result<()> {
         .init();
 
     check_argument_compatability(&args)?;
+    let size = parse_size(&args)?;
+
+    debug!(
+        "Starting to generate file with {} bytes!",
+        size.byte_amount()
+    );
 
     Ok(())
 }
@@ -44,8 +52,28 @@ fn check_argument_compatability(args: &Args) -> color_eyre::Result<()> {
 
         bail!(FileGenError::IncompatibleAsciiLoremError);
     }
-    info!("Arguments are compatible!");
+    info!("Arguments are compatible");
 
     trace!("Returning from check_argument_compatability");
     Ok(())
+}
+
+fn parse_size(args: &Args) -> color_eyre::Result<FileSize> {
+    trace!("Calling parse_size");
+
+    debug!("Starting to parse size");
+    let file_size: Result<FileSize, FileGenError> = args.size.clone().try_into();
+    let file_size = match file_size {
+        Ok(file_size) => {
+            info!("Size was valid");
+            file_size
+        }
+        Err(err) => {
+            error!("Failed to parse size");
+            bail!(err)
+        }
+    };
+
+    trace!("Returning from check_argument_compatability");
+    Ok(file_size)
 }
