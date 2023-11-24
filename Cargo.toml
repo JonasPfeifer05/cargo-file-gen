@@ -2,6 +2,13 @@
 name = "cargo-file-gen"
 version = "1.0.0"
 edition = "2021"
+authors = ["Jonas Pfeifer"]
+description = "A program to generate files with a certain size"
+homepage = ""
+documentation = ""
+repository = ""
+readme = ""
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
