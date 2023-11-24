@@ -1,6 +1,7 @@
-use anyhow::bail;
+use cargo_file_gen::error::FileGenError;
 use clap::Parser;
 use clap_verbosity_flag::Verbosity;
+use color_eyre::eyre::bail;
 use log::{debug, error};
 use std::path::PathBuf;
 
@@ -19,7 +20,9 @@ struct Args {
     verbose: Verbosity,
 }
 
-fn main() -> anyhow::Result<()> {
+fn main() -> color_eyre::Result<()> {
+    color_eyre::install()?;
+
     let args = Args::parse();
 
     env_logger::Builder::new()
@@ -28,10 +31,10 @@ fn main() -> anyhow::Result<()> {
 
     debug!("Checking if the arguments are valid");
     if args.ascii && args.lorem {
-        debug!("Encountered ascii and valid in the same call");
+        debug!("Encountered ascii and lorem in the same call");
         error!("You cannot provide ascii and lorem at the same time");
 
-        bail!("Got --ascii and --lorem at the same time!");
+        bail!(FileGenError::IncompatibleArgumentsException);
     }
 
     Ok(())
