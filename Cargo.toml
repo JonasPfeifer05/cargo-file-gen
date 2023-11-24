@@ -4,9 +4,9 @@ version = "1.0.0"
 edition = "2021"
 authors = ["Jonas Pfeifer"]
 description = "A program to generate files with a certain size"
-homepage = ""
-documentation = ""
-repository = ""
+homepage = "https://todo.com"
+documentation = "https://todo.com"
+repository = "https://github.com/JonasPfeifer05/cargo-file-gen"
 readme = "README.md"
 license = "MIT"
 
