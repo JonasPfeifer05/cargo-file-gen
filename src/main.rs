@@ -2,7 +2,7 @@ use cargo_file_gen::error::FileGenError;
 use clap::Parser;
 use clap_verbosity_flag::Verbosity;
 use color_eyre::eyre::bail;
-use log::{debug, error};
+use log::{debug, error, info, trace};
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
@@ -29,13 +29,23 @@ fn main() -> color_eyre::Result<()> {
         .filter_level(args.verbose.log_level_filter())
         .init();
 
+    check_argument_compatability(&args)?;
+
+    Ok(())
+}
+
+fn check_argument_compatability(args: &Args) -> color_eyre::Result<()> {
+    trace!("Calling check_argument_compatability");
+
     debug!("Checking if the arguments are valid");
     if args.ascii && args.lorem {
         debug!("Encountered ascii and lorem in the same call");
         error!("You cannot provide ascii and lorem at the same time");
 
-        bail!(FileGenError::IncompatibleArgumentsException);
+        bail!(FileGenError::IncompatibleAsciiLoremError);
     }
+    info!("Arguments are compatible!");
 
+    trace!("Returning from check_argument_compatability");
     Ok(())
 }
