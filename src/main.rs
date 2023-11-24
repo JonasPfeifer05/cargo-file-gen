@@ -79,6 +79,7 @@ fn main() -> color_eyre::Result<()> {
         .with_context(|| "Failed to write data to file")?;
     info!("Succeeded to write data to file");
 
+    info!("Program succeeded");
     Ok(())
 }
 
