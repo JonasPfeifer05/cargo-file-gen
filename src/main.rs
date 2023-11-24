@@ -1,6 +1,6 @@
 use cargo_file_gen::error::FileGenError;
 use cargo_file_gen::file_size::FileSize;
-use clap::{arg, Parser};
+use clap::{arg, Args, Parser};
 use clap_verbosity_flag::Verbosity;
 use color_eyre::eyre::{bail, Context};
 use log::{debug, error, info, trace};
@@ -10,8 +10,15 @@ use std::path::PathBuf;
 
 const AVG_LIPSUM_WORD_LENGTH: f64 = 6.793286;
 
-#[derive(Parser, Debug)]
-struct Args {
+#[derive(Parser)]
+#[command(name = "cargo")]
+#[command(bin_name = "cargo")]
+enum CargoCli {
+    FileGen(FeaturesArgs)
+}
+
+#[derive(Args, Debug)]
+struct FeaturesArgs {
     path: PathBuf,
     size: String,
 
@@ -27,7 +34,7 @@ struct Args {
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
 
-    let args = Args::parse();
+    let CargoCli::FileGen(args) = CargoCli::parse();
 
     env_logger::Builder::new()
         .filter_level(args.verbose.log_level_filter())
@@ -83,7 +90,7 @@ fn main() -> color_eyre::Result<()> {
     Ok(())
 }
 
-fn check_path(args: &Args) -> color_eyre::Result<()> {
+fn check_path(args: &FeaturesArgs) -> color_eyre::Result<()> {
     trace!("Calling check_path");
 
     debug!("Checking if the path is valid");
@@ -98,7 +105,7 @@ fn check_path(args: &Args) -> color_eyre::Result<()> {
     Ok(())
 }
 
-fn check_argument_compatability(args: &Args) -> color_eyre::Result<()> {
+fn check_argument_compatability(args: &FeaturesArgs) -> color_eyre::Result<()> {
     trace!("Calling check_argument_compatability");
 
     debug!("Checking if the arguments are valid");
@@ -114,7 +121,7 @@ fn check_argument_compatability(args: &Args) -> color_eyre::Result<()> {
     Ok(())
 }
 
-fn parse_size(args: &Args) -> color_eyre::Result<FileSize> {
+fn parse_size(args: &FeaturesArgs) -> color_eyre::Result<FileSize> {
     trace!("Calling parse_size");
 
     debug!("Starting to parse size");
