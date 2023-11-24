@@ -76,6 +76,6 @@ impl TryInto<SizeType> for String {
             _ => return Err(FileGenError::InvalidTypeForSizeError),
         };
 
-        return Ok(size_type);
+        Ok(size_type)
     }
 }
