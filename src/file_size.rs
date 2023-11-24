@@ -36,7 +36,7 @@ impl TryInto<FileSize> for String {
 
         let amount = match amount.parse::<u64>() {
             Ok(ok) => ok,
-            Err(_err) => return Err(FileGenError::InvalidAmountForSize),
+            Err(_err) => return Err(FileGenError::InvalidAmountForSizeError),
         };
         Ok(FileSize {
             amount,
@@ -73,7 +73,7 @@ impl TryInto<SizeType> for String {
             "kb" => SizeType::KiloByte,
             "mb" => SizeType::MegaByte,
             "gb" => SizeType::GigaByte,
-            _ => return Err(FileGenError::InvalidTypeForSize),
+            _ => return Err(FileGenError::InvalidTypeForSizeError),
         };
 
         return Ok(size_type);

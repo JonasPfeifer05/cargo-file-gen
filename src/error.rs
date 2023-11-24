@@ -3,8 +3,9 @@ use std::fmt::{write, Display, Formatter};
 #[derive(Debug)]
 pub enum FileGenError {
     IncompatibleAsciiLoremError,
-    InvalidAmountForSize,
-    InvalidTypeForSize,
+    InvalidAmountForSizeError,
+    InvalidTypeForSizeError,
+    DirectoryPassedError,
 }
 
 impl Display for FileGenError {
@@ -13,13 +14,19 @@ impl Display for FileGenError {
             FileGenError::IncompatibleAsciiLoremError => {
                 write!(f, "You cannot pass --ascii and --lorem at the same time")
             }
-            FileGenError::InvalidAmountForSize => {
+            FileGenError::InvalidAmountForSizeError => {
                 write!(f, "Invalid amount passed for the size")
             }
-            FileGenError::InvalidTypeForSize => {
+            FileGenError::InvalidTypeForSizeError => {
                 write!(
                     f,
                     "Invalid type passed for size! Valid options are 'b', 'kb', 'mb' and 'gb'"
+                )
+            }
+            FileGenError::DirectoryPassedError => {
+                write!(
+                    f,
+                    "Invalid path passed! Directory was passed instead of file"
                 )
             }
         }
